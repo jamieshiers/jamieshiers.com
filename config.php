@@ -3,10 +3,10 @@
 use Illuminate\Support\Str;
 
 return [
-    'baseUrl' => 'jamieshiers.com',
+    'baseUrl' => '/',
     'production' => false,
-    'siteName' => 'Blog Starter Template',
-    'siteDescription' => 'Generate an elegant blog with Jigsaw',
+    'siteName' => 'Jamie Shiers',
+    'siteDescription' => 'The Personal Website of Jamie Shiers',
     'siteAuthor' => 'Jamie Shiers',
 
     // collections
