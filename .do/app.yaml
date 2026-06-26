@@ -1,0 +1,13 @@
+name: jamieshiers-com
+region: lon
+static_sites:
+  - name: jamieshiers-com
+    source_dir: /
+    build_command: npm run build
+    output_dir: dist
+    environment_slug: node-js
+    routes:
+      - path: /
+    envs:
+      - key: NODE_VERSION
+        value: "22"

@@ -1,0 +1,95 @@
+---
+import Base from './Base.astro';
+import { categorySlug } from '../lib/utils';
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  category: string;
+}
+
+const { title, description, pubDate, category } = Astro.props;
+
+const formattedDate = pubDate.toLocaleDateString('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+
+<Base title={`${title} — Jamie Shiers`} description={description} ogType="article">
+  <article>
+    <div class="container">
+      <header class="post-header">
+        <div class="post-meta">
+          <time datetime={pubDate.toISOString()} class="mono">{formattedDate}</time>
+          <span class={`tag tag--${categorySlug(category)}`}>{category}</span>
+        </div>
+        <h1 class="post-title">{title}</h1>
+        <p class="post-description">{description}</p>
+      </header>
+      <hr class="post-divider" />
+      <div class="prose">
+        <slot />
+      </div>
+      <div class="post-footer">
+        <a href="/" class="mono back-link">← all writing</a>
+      </div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  article {
+    padding: 48px 0 80px;
+  }
+  .post-header {
+    margin-bottom: 32px;
+  }
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .post-meta time {
+    font-size: 12px;
+    color: var(--text-subtle);
+  }
+  .post-title {
+    font-size: 1.75rem;
+    font-weight: 500;
+    line-height: 1.25;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    letter-spacing: -0.3px;
+  }
+  .post-description {
+    font-size: 1rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    max-width: 580px;
+  }
+  .post-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 32px 0;
+  }
+  .post-footer {
+    margin-top: 56px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+  .back-link {
+    font-size: 12px;
+    color: var(--text-muted);
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--accent); }
+
+  @media (max-width: 600px) {
+    .post-title { font-size: 1.35rem; }
+    article { padding: 32px 0 60px; }
+  }
+</style>

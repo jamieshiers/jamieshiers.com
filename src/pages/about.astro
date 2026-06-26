@@ -1,0 +1,91 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="About — Jamie Shiers"
+  description="Operations & Quality Manager in UK aerospace manufacturing. Founder of Parola Development."
+>
+  <div class="container">
+    <div class="about-wrap">
+      <header class="about-header">
+        <p class="eyebrow mono">About</p>
+        <h1>Jamie Shiers</h1>
+        <p class="tagline">Operations & Quality Manager · Aerospace Manufacturing · Founder, <a href="https://parola.dev" target="_blank" rel="noopener">Parola Development</a></p>
+      </header>
+
+      <div class="prose">
+        <p>
+          I work as Operations & Quality Manager at a small UK aerospace manufacturer,
+          where I wear most of the hats — quality systems, IT infrastructure, supply chain
+          compliance, business development, and anything else that needs doing on a given day.
+        </p>
+        <p>
+          My current focus is leading the company's certification journey through
+          AS9100D / EN9100, Cyber Essentials, and JOSCAR supplier qualification — while
+          keeping the day-to-day running smoothly. I write here to share what I'm learning,
+          both for my own clarity and in the hope it's useful to others navigating the same terrain.
+        </p>
+        <p>
+          Outside the day job, I run <a href="https://parola.dev" target="_blank" rel="noopener">Parola Development</a> —
+          a small IT consultancy helping other UK SMEs with managed IT, Microsoft 365, and
+          cyber security. Cyber Essentials implementation is a particular focus there.
+        </p>
+
+        <h2>What I write about</h2>
+        <ul>
+          <li><strong>AS9100D & EN9100</strong> — practical implementation in small manufacturers, not the theory</li>
+          <li><strong>Cyber Essentials</strong> — step-by-step guides for businesses without a dedicated IT team</li>
+          <li><strong>Operations</strong> — quality management, supply chain, JOSCAR, AQAP, and the realities of small-team operations</li>
+          <li><strong>Technology</strong> — Microsoft 365, infrastructure, and the tools that keep small businesses running</li>
+        </ul>
+
+        <h2>Background</h2>
+        <p>
+          Based in the West Midlands, UK. Working in aerospace and defence supply chain.
+          Interested in the intersection of operational discipline and practical technology.
+        </p>
+
+        <h2>Get in touch</h2>
+        <p>
+          The best way to reach me is via <a href="https://linkedin.com/in/jamieshiers" target="_blank" rel="noopener">LinkedIn</a>.
+          For Parola Development enquiries, use the contact form at <a href="https://parola.dev" target="_blank" rel="noopener">parola.dev</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .about-wrap {
+    max-width: 620px;
+    padding: 48px 0 80px;
+  }
+  .eyebrow {
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-size: 1.75rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    letter-spacing: -0.3px;
+  }
+  .tagline {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 40px;
+    line-height: 1.6;
+  }
+  .tagline a {
+    color: var(--accent);
+  }
+  .tagline a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+  }
+</style>

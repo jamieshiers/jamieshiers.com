@@ -1,0 +1,167 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { categorySlug, shortDate } from '../lib/utils';
+
+const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const categories = ['Cyber Essentials', 'AS9100D', 'Operations', 'Technology'] as const;
+---
+
+<Base title="Jamie Shiers — Operations, Quality & Technology">
+  <div class="container">
+    <section class="intro">
+      <p class="eyebrow mono">Operations · Quality · Technology</p>
+      <p class="intro-text">
+        Writing about aerospace manufacturing, quality management systems,
+        cyber security, and the operational realities of running complex
+        businesses with small teams.
+      </p>
+    </section>
+
+    <section class="posts-section">
+      <nav class="filters" aria-label="Filter by category">
+        <button class="filter mono active" data-filter="all">All</button>
+        {categories.map(cat => (
+          <button class={`filter mono tag--${categorySlug(cat)}`} data-filter={categorySlug(cat)}>
+            {cat}
+          </button>
+        ))}
+      </nav>
+
+      <div class="section-label mono">Recent writing</div>
+
+      <div id="post-list">
+        {allPosts.map((post, i) => (
+          <article class="post-item" data-category={categorySlug(post.data.category)}>
+            <a href={`/blog/${post.slug}`} class="post-link">
+              <div class="post-meta">
+                <time class="mono post-date" datetime={post.data.pubDate.toISOString()}>
+                  {shortDate(post.data.pubDate)}
+                </time>
+                <span class={`tag tag--${categorySlug(post.data.category)}`}>
+                  {post.data.category}
+                </span>
+              </div>
+              <h2 class="post-title">{post.data.title}</h2>
+              <p class="post-excerpt">{post.data.description}</p>
+            </a>
+            {i < allPosts.length - 1 && <hr class="post-divider" />}
+          </article>
+        ))}
+        {allPosts.length === 0 && (
+          <p class="empty mono">No posts yet — check back soon.</p>
+        )}
+      </div>
+    </section>
+  </div>
+</Base>
+
+<script>
+  const filters = document.querySelectorAll('.filter');
+  const posts   = document.querySelectorAll('.post-item');
+
+  filters.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const active = btn.getAttribute('data-filter') ?? 'all';
+      filters.forEach(f => f.classList.remove('active'));
+      btn.classList.add('active');
+
+      const visiblePosts = [];
+      posts.forEach(post => {
+        const show = active === 'all' || post.getAttribute('data-category') === active;
+        (post as HTMLElement).style.display = show ? '' : 'none';
+        if (show) visiblePosts.push(post);
+      });
+
+      // Manage dividers: hide all, show only between visible posts
+      document.querySelectorAll('.post-divider').forEach(d => {
+        (d as HTMLElement).style.display = 'none';
+      });
+      visiblePosts.slice(0, -1).forEach(p => {
+        const hr = (p as HTMLElement).querySelector('.post-divider');
+        if (hr) (hr as HTMLElement).style.display = '';
+      });
+    });
+  });
+</script>
+
+<style>
+  .intro {
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+  }
+  .eyebrow {
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .intro-text {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.75;
+    max-width: 520px;
+  }
+  .filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+  .filter {
+    font-size: 11px;
+    padding: 5px 12px;
+    border-radius: 3px;
+    border: 1px solid var(--border-mid);
+    color: var(--text-muted);
+    background: none;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+  }
+  .filter:hover { border-color: var(--text-muted); color: var(--text-secondary); }
+  .filter.active { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+  .filter.tag--as9100d.active { border-color: var(--tag-aero-fg); color: var(--tag-aero-fg); background: var(--tag-aero-bg); }
+  .filter.tag--ops.active     { border-color: var(--tag-ops-fg);  color: var(--tag-ops-fg);  background: var(--tag-ops-bg); }
+  .filter.tag--tech.active    { border-color: var(--tag-tech-fg); color: var(--tag-tech-fg); background: var(--tag-tech-bg); }
+  .section-label {
+    font-size: 11px;
+    color: var(--border-mid);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 4px;
+  }
+  .post-item { display: block; }
+  .post-link {
+    display: block;
+    padding: 22px 0 22px 20px;
+    border-left: 2px solid transparent;
+    transition: border-color 0.15s;
+  }
+  .post-link:hover { border-left-color: var(--accent); }
+  .post-link:hover .post-title { color: var(--text-primary); }
+  .post-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .post-date { font-size: 11px; color: var(--text-subtle); }
+  .post-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    line-height: 1.45;
+    margin-bottom: 6px;
+    transition: color 0.15s;
+    letter-spacing: -0.1px;
+  }
+  .post-excerpt { font-size: 13px; color: var(--text-subtle); line-height: 1.65; }
+  .post-divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+  .empty { font-size: 13px; color: var(--text-subtle); padding: 40px 20px; }
+  @media (max-width: 600px) {
+    .intro { padding: 32px 0 28px; }
+    .post-link { padding: 18px 0 18px 14px; }
+    .post-title { font-size: 14px; }
+  }
+</style>
